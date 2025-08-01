@@ -44,8 +44,11 @@ jobs:
           cd a.out
           TARGET_BRANCH="${{ github.ref_name }}"
           
+          # Fetch all remote branches
+          git fetch origin
+          
           # Check if target branch exists in remote
-          if git ls-remote --exit-code --heads origin "$TARGET_BRANCH" >/dev/null 2>&1; then
+          if git branch -r | grep -q "origin/$TARGET_BRANCH$"; then
             echo "Branch $TARGET_BRANCH exists, checking out"
             git checkout -b "$TARGET_BRANCH" "origin/$TARGET_BRANCH"
           else
