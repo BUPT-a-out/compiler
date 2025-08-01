@@ -47,7 +47,7 @@ jobs:
           # Check if target branch exists in remote
           if git ls-remote --exit-code --heads origin "$TARGET_BRANCH" >/dev/null 2>&1; then
             echo "Branch $TARGET_BRANCH exists, checking out"
-            git checkout "$TARGET_BRANCH"
+            git checkout -b "$TARGET_BRANCH" "origin/$TARGET_BRANCH"
           else
             echo "Branch $TARGET_BRANCH does not exist, creating from default branch"
             git checkout -b "$TARGET_BRANCH"
