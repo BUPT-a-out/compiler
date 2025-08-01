@@ -38,7 +38,20 @@ jobs:
           path: a.out
           token: ${{ secrets.A_OUT_TOKEN }}
           submodules: recursive
-          ref: ${{ github.ref_name }}
+
+      - name: Setup target branch
+        run: |
+          cd a.out
+          TARGET_BRANCH="${{ github.ref_name }}"
+          
+          # Check if target branch exists in remote
+          if git ls-remote --exit-code --heads origin "$TARGET_BRANCH" >/dev/null 2>&1; then
+            echo "Branch $TARGET_BRANCH exists, checking out"
+            git checkout "$TARGET_BRANCH"
+          else
+            echo "Branch $TARGET_BRANCH does not exist, creating from default branch"
+            git checkout -b "$TARGET_BRANCH"
+          fi
 
       - name: Install xmake
         run: |
@@ -82,4 +95,4 @@ jobs:
 
           git add .
           git commit -m "${{ steps.commit.outputs.commit_message }}" || echo "Nothing to commit"
-          git push origin ${{ github.ref_name }}
+          git push origin ${{ github.ref_name }} || git push -u origin ${{ github.ref_name }}
