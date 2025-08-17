@@ -11,6 +11,7 @@
 #include "Pass/Analysis/CallGraph.h"
 #include "Pass/Pass.h"
 #include "Pass/Transform/ADCEPass.h"
+#include "Pass/Transform/ComptimePass.h"
 #include "Pass/Transform/GVNPass.h"
 #include "Pass/Transform/InlinePass.h"
 #include "Pass/Transform/InstCombinePass.h"
@@ -152,6 +153,7 @@ int main(int argc, char* argv[]) {
         passBuilder.registerPass<midend::SimplifyCFGPass>("simplifycfg");
         passBuilder.registerPass<midend::GVNPass>("gvn");
         passBuilder.registerPass<midend::LICMPass>("licm");
+        passBuilder.registerPass<midend::ComptimePass>("comptime");
         passBuilder.registerPass<midend::TailRecursionOptimizationPass>(
             "tailrec");
         passBuilder.registerPass<midend::StrengthReductionPass>(
