@@ -9,7 +9,8 @@ set_warnings("all")
 add_cxxflags("-Wall", "-Wextra")
 
 if is_mode("debug") then
-    add_cxxflags("-g", "-O0")
+    add_cxxflags("-g", "-O0", "-DA_OUT_DEBUG", "-fno-limit-debug-info")
+    add_defines("A_OUT_DEBUG")
     set_symbols("debug")
     set_optimize("none")
 elseif is_mode("release") then
