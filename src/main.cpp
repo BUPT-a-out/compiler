@@ -18,6 +18,7 @@
 #include "Pass/Transform/LICMPass.h"
 #include "Pass/Transform/Mem2RegPass.h"
 #include "Pass/Transform/SimplifyCFGPass.h"
+#include "Pass/Transform/StoreGlobalize.h"
 #include "Pass/Transform/StrengthReductionPass.h"
 #include "Pass/Transform/TailRecursionOptimizationPass.h"
 #include "Target.h"
@@ -154,6 +155,7 @@ int main(int argc, char* argv[]) {
         passBuilder.registerPass<midend::GVNPass>("gvn");
         passBuilder.registerPass<midend::LICMPass>("licm");
         passBuilder.registerPass<midend::ComptimePass>("comptime");
+        passBuilder.registerPass<midend::StoreGlobalize>("storeglobalize");
         passBuilder.registerPass<midend::TailRecursionOptimizationPass>(
             "tailrec");
         passBuilder.registerPass<midend::StrengthReductionPass>(
