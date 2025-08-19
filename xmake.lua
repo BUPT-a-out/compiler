@@ -38,9 +38,6 @@ target("compiler")
     add_deps("riscv64", "midend", "frontend")
     add_rpathdirs("@loader_path", "@loader_path/lib")
 
-if os.isdir(path.join(os.scriptdir(), "tests")) then
-    includes("tests/xmake.lua")
-end
 
 function resolve(path)
     if path.is_absolute(path) then
