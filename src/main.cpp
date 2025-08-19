@@ -9,6 +9,7 @@
 
 #include "IR/IRPrinter.h"
 #include "Pass/Analysis/CallGraph.h"
+#include "Pass/Analysis/MemorySSA.h"
 #include "Pass/Pass.h"
 #include "Pass/Transform/ADCEPass.h"
 #include "Pass/Transform/ComptimePass.h"
@@ -144,6 +145,7 @@ int main(int argc, char* argv[]) {
         analysisManager->registerAnalysisType<midend::CallGraphAnalysis>();
         analysisManager->registerAnalysisType<midend::AliasAnalysis>();
         analysisManager->registerAnalysisType<midend::LoopAnalysis>();
+        analysisManager->registerAnalysisType<midend::MemorySSAAnalysis>();
         midend::PassBuilder passBuilder;
         midend::InlinePass::setInlineThreshold(1000);
         midend::InlinePass::setMaxSizeGrowthThreshold(1000);
@@ -168,7 +170,7 @@ int main(int argc, char* argv[]) {
             pipeline = R"(
                 mem2reg,tailrec,adce,simplifycfg
                 (gvn,inline,licm,gvn)*5
-                instcombine,strengthreduce
+                instcombine,strengthreduce,storeglobalize,comptime
                 mem2reg,adce,simplifycfg
             )";
         }
