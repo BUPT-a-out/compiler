@@ -13,6 +13,7 @@
 #include "Pass/Pass.h"
 #include "Pass/Transform/ADCEPass.h"
 #include "Pass/Transform/ComptimePass.h"
+#include "Pass/Transform/GEPToByteOffsetPass.h"
 #include "Pass/Transform/GVNPass.h"
 #include "Pass/Transform/InlinePass.h"
 #include "Pass/Transform/InstCombinePass.h"
@@ -158,6 +159,7 @@ int main(int argc, char* argv[]) {
         passBuilder.registerPass<midend::LICMPass>("licm");
         passBuilder.registerPass<midend::ComptimePass>("comptime");
         passBuilder.registerPass<midend::StoreGlobalize>("storeglobalize");
+        passBuilder.registerPass<midend::GEPToByteOffsetPass>("gep2bytes");
         passBuilder.registerPass<midend::TailRecursionOptimizationPass>(
             "tailrec");
         passBuilder.registerPass<midend::StrengthReductionPass>(
@@ -170,7 +172,8 @@ int main(int argc, char* argv[]) {
             pipeline = R"(
                 mem2reg,tailrec,adce,simplifycfg
                 (gvn,inline,licm,gvn)*5
-                instcombine,strengthreduce
+                instcombine,strengthreduce,storeglobalize,comptime
+                gep2bytes,(gvn,licm)*2
                 mem2reg,adce,simplifycfg
             )";
         }
