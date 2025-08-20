@@ -170,7 +170,7 @@ int main(int argc, char* argv[]) {
             pipeline = R"(
                 mem2reg,tailrec,adce,simplifycfg
                 (gvn,inline,licm,gvn)*5
-                instcombine,strengthreduce,storeglobalize,comptime
+                instcombine,strengthreduce
                 mem2reg,adce,simplifycfg
             )";
         }
